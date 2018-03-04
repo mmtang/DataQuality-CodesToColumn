@@ -50,11 +50,7 @@ with open(dataFile, 'r') as imported:
                     regexCode = matchType + r'[: ]?([a-zA-Z0-9, /<>=]+)'
                     matchCode = re.search(regexCode, ind).groups()
                     matchCode = matchCode[0]
-                    # check for multiple codes
-                    if matchCode.find(','):
-                        codes = matchCode.split(',')
-                    else: 
-                        codes = matchCode
+                    codes = matchCode.split(',')
                     # write a new line for each code
                     for i in codes:
                         newLine = line + '|' + matchType + '|' + i + '\n'
