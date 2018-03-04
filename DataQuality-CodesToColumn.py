@@ -15,7 +15,7 @@ dataFile = 'WaterChemistryData.csv'
 targetName = 'new-file.csv'
 targetFile = open(targetName, 'w')
 
-print('Writing: ' + targetName)
+print('Writing: %s' % (targetName))
 print('Please wait...')
 
 # write new header 
@@ -58,8 +58,8 @@ with open(dataFile, 'r') as imported:
                         count += 1
                 except AttributeError:
                     # catch values that are missing codes
-                    # 'Latitude:' is the main culprit here
-                    # is 'Latitude' a data indicator type? need to check decision tree
+                    # 'Latitude:' is the main culprit here, 
+                    # is latitude a data indicator type? need to check decision tree
                     targetFile.write(newLine)
                     count += 1
 
