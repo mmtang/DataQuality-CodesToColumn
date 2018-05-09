@@ -10,7 +10,7 @@ https://github.com/mmtang
 
 import re
 
-# change file if using a different dataset
+# set workspace environment
 dataFile = 'WaterChemistryData.csv'
 targetName = 'new-file.csv'
 targetFile = open(targetName, 'w')
@@ -47,19 +47,25 @@ with open(dataFile, 'r') as imported:
                     regexType = r'([a-zA-Z]+)[: ]?'
                     matchType = re.search(regexType, ind).groups()
                     matchType = matchType[0]
-                    regexCode = matchType + r'[: ]?([a-zA-Z0-9, /<>=]+)'
-                    matchCode = re.search(regexCode, ind).groups()
-                    matchCode = matchCode[0]
-                    codes = matchCode.split(',')
-                    # write a new line for each code
-                    for i in codes:
-                        newLine = line + '|' + matchType + '|' + i + '\n'
+                    # the 'latitude' indicator type does not have a corresponding code. 
+                    # create a new code 'Latitude' so that this indicator type is still counted. 
+                    if matchType == 'Latitude':
+                        newLine = line + '|' + matchType + '|' + 'Latitude' + '\n'
                         targetFile.write(newLine)
                         count += 1
+                    else:
+                        # for all indicator types other than latitude
+                        regexCode = matchType + r'[: ]?([a-zA-Z0-9, /<>=]+)'
+                        matchCode = re.search(regexCode, ind).groups()
+                        matchCode = matchCode[0]
+                        codes = matchCode.split(',')
+                        # write a new line for each code
+                        for i in codes:
+                            newLine = line + '|' + matchType + '|' + i + '\n'
+                            targetFile.write(newLine)
+                            count += 1
                 except AttributeError:
-                    # catch values that are missing codes
-                    # 'Latitude:' is the main culprit here, 
-                    # is latitude a data indicator type? need to check decision tree
+                    # catch values that are missing codes, write as is
                     targetFile.write(newLine)
                     count += 1
 
